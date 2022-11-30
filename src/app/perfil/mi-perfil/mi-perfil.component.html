@@ -1,0 +1,180 @@
+
+<mat-card>
+    
+    <mat-card-title *ngIf="tipoUser ==1 ">
+        <mat-icon>account_circle</mat-icon> Administracion
+    </mat-card-title>
+    <mat-card-title *ngIf="tipoUser == 2 ">
+        <mat-icon>account_circle</mat-icon> Mi Perfil(Trabajador)
+    </mat-card-title>
+    <mat-card-title *ngIf="tipoUser >= 3 ">
+        <mat-icon>account_circle</mat-icon> Mi Perfil(Empleador)
+    </mat-card-title>
+    <mat-card-content >
+        <div class="box" *ngIf="tipoUser == 1 ">
+            <!--Administrador-->
+        <mat-card>
+            <mat-tab-group >
+                <div class="div-xs">
+                <mat-tab label="Administracion">
+                    <mat-card class="left-text">
+                    <!--ciclo para mostrar la informacion laboral del empleado-->
+                    <h4>Opciones</h4>
+                       <h4></h4>
+                    </mat-card>
+                </mat-tab>
+                </div>
+                <div class="div-xs">
+                <mat-tab label="Validaciones"> 
+                    <mat-card class="other left-text">
+                        <h4>Lista de cuentas a validar </h4>
+                        
+                    </mat-card>
+                </mat-tab>
+                </div>
+                <div class="div-xs">
+                    <mat-tab label="Cuentas"> 
+                        <mat-card class="other left-text">
+                            <h4>Lista de cuentas verificadas</h4>
+                            
+                        </mat-card>
+                    </mat-tab>
+                </div>
+                <div class="div-xs">
+                    <mat-tab label="Perfiles"> 
+                        <mat-card class="other left-text">
+                            <h4>Administradores activos</h4>
+                           
+                        </mat-card>
+                    </mat-tab>
+                </div>
+                <div class="div-xs">
+                    <mat-tab label="Configuraciones"> 
+                        <mat-card class="other left-text">
+                            <h4>registro de nuevo administrador</h4>
+                            <h4>Otros</h4>
+                        </mat-card>
+                    </mat-tab>
+                </div>
+            </mat-tab-group>
+        </mat-card>    
+    <!---->
+        </div>
+        <div class=" item-box-content">
+            <mat-card-content>
+            <mat-tab-group style=" text-align: center;" *ngIf="tipoUser == 2 ">
+                <div class="div-xs">
+                <mat-tab label="Servicios">
+                    <mat-card class="other left-text">
+                       <!--ciclo para mostrar la informacion laboral del empleado-->
+                       <h4>Lista de Servicios publicados </h4>
+                        <h4 *ngIf="listServicios.length == 0">Aun no ha publicado servicios</h4>
+                        <mat-card-content class="empleos">
+                            <div *ngFor="let experiencia of listServicios; let i = index;">
+                                <h3>{{experiencia.varNombreTrabahjo}}</h3>
+                                <h3>{{'Descripcion: ' + experiencia.varDescripcion}}</h3>
+                                <h3>{{'Habilidades' + experiencia.varHabilidades}}</h3>
+                                <h3>{{'Horario' + experiencia.varHorario}}</h3>
+                                <mat-card-actions class="text-right">
+                                    <p>{{'Sueldo estimado: ' + experiencia.decSalario | currency}}</p>
+                                    <button mat-flat-button color="primary" (click)="Eliminar(experiencia)">Eliminar</button>
+                                </mat-card-actions>
+                                
+                            </div>
+                        </mat-card-content>
+                        <button mat-flat-button color="primary" (click)="agregar()">Agregar</button>
+                    </mat-card>
+                </mat-tab>
+                </div>
+                <div class="div-xs">
+                <mat-tab label="Solicitudes"> 
+                    <mat-card class="other left-text">
+                        <h4>Lista de solicitudes a sus servicios </h4>
+                        <h4 *ngIf="lisSolicitudes.length == 0">Aun no han solicitado tus servicios</h4>
+                        <mat-card-content class="empleos">
+                            <div *ngFor="let solicitudes of lisSolicitudes; let i = index;">
+                                <h3>{{solicitudes.trabajo + ' '+ solicitudes.nombreEmpresa}}</h3>
+                                <h3>{{'Responsable: ' + solicitudes.nombreResponsable}}</h3>
+                                <mat-card-actions class="text-right">
+                                    <button mat-flat-button color="primary" (click)="Detalle(solicitudes)">Detalle</button>
+                                </mat-card-actions>
+                            </div>
+                        </mat-card-content> 
+                    </mat-card>
+                </mat-tab>
+                </div>
+                <div class="div-xs">
+                    <mat-tab label="Postulaciones"> 
+                        <mat-card class="other left-text">
+                            <h4>Lista de postulaciones </h4>
+                            <h4 *ngIf="listPost.length == 0">aun no te has postulado a ninguna oferta</h4>
+                            <mat-card-content class="empleos">
+                                <div *ngFor="let posts of listPost; let i = index;">
+                                    <h3>{{'Empresa: '+posts.userName + ' Puesto: '+ posts.varPuesto}}</h3>
+                                    <h3>{{'Ubicacion: ' + posts.varMunicipio}}</h3>
+                                    
+                                </div>
+                            </mat-card-content> 
+                        </mat-card>
+                        
+                    </mat-tab>
+                </div>
+            </mat-tab-group>
+        </mat-card-content>
+        </div>
+        <!-- apartado para empleadores -->
+        <div >
+            <mat-card-content>
+            <mat-tab-group style=" text-align: center;" *ngIf="tipoUser >= 3 ">
+                <div class="div-xs">
+                <mat-tab label="Ofertas Laborales">
+                    <mat-card class="other left-text">
+                        <h4>Lista de Ofertas Laborales publicadas</h4>
+                        <h4 *ngIf="listServicios.length == 0">Aun no ha publicado ofertas</h4>
+                        <mat-card-content>
+                            <div *ngFor="let experiencia of listServicios">
+                                <app-experiencia-detalle [data]="experiencia"></app-experiencia-detalle>
+                            </div>
+                        </mat-card-content>
+                        <button mat-flat-button color="primary" (click)="agregar()">publicar Oferta</button>
+                    </mat-card>
+                </mat-tab>
+                </div>
+                <div class="div-xs">
+                <mat-tab label="Postulaciones"> 
+                    <mat-card class="other left-text">
+                        <h4>Lista de postulaciones </h4>
+                        <h4 *ngIf="listServiciosuser.length == 0">Aun no se han postulado a sus ofertas</h4>
+                        <mat-card-content>
+                            <div *ngFor="let servicios of listServiciosuser">
+                                <app-vacantedetalle [dataVacante]="servicios"></app-vacantedetalle>
+                            </div> 
+                         </mat-card-content> 
+                        
+                    </mat-card>
+                </mat-tab>
+                </div>
+                <div class="div-xs">
+                    <mat-tab label="Solicitudes"> 
+                        <mat-card class="other left-text">
+                            <h4>lista de servicios solicitados </h4>
+                            <h4 *ngIf="listPost.length == 0">Aun no ha solicitado servicios</h4>
+                            <mat-card-content>
+                                <div *ngFor="let postulaciones of listPost">
+                                    <app-postulaciones [dataPost]="postulaciones">                                       
+                                    </app-postulaciones>
+                                </div> 
+                             </mat-card-content> 
+                            <button mat-flat-button color="primary" routerLink="personas
+                             ">Buscar Servicios</button>
+                        </mat-card>
+                    </mat-tab>
+                </div>
+            </mat-tab-group>
+        </mat-card-content>
+        </div>
+        
+        
+    </mat-card-content>
+    
+</mat-card>

@@ -1,0 +1,39 @@
+<mat-card [formGroup]="form">
+    <mat-card-content>
+        <mat-form-field appearance="outline">
+            <!--Select profession o ofice -->
+            <mat-label>Puesto o Área laboral</mat-label>
+            <input matInput placeholder="Nombre del Trabajo" style="width: 40%" formControlName="varCargo" maxlength="30">
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 35%">
+            <mat-label>Tipo de Empleado</mat-label>
+            <mat-select formControlName="intTipoTrabajo"  (selectionChange)="onChange($event.value)" (selectionChange)="consultar()">
+            <mat-option *ngFor="let op of options" [value]="op.id">
+                {{op.viewValue}}
+            </mat-option>
+            </mat-select>
+            
+        </mat-form-field>
+        <button mat-flat-button color="primary" class="buttons" (click)="consultar()">Buscar Empleo</button>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="empleos" *ngIf="mostrartrabajos">
+    <div *ngFor="let oferta of listOfertasLaborales; let i = index;">
+        <h3>{{oferta.empresa + ' - ' + oferta.varPuesto}}</h3>
+        <mat-card-content>
+            <p>Requisitos: 
+                {{oferta.varDescripcion}}
+            </p>
+            <p *ngIf="oferta.mostrar">
+                Ubicación: {{oferta.varUbicacion}}
+            </p>
+        </mat-card-content>
+        <mat-card-actions class="text-right">
+            <p>{{oferta.decSalario | currency}}</p>
+            <button mat-flat-button color="primary" style="margin-right: 5px;"  (click)="mostrarDetalle(oferta)">Detalle</button>
+            <button mat-flat-button color="primary"  *ngIf="!logged" >Inicie Sesion para Postularse</button>
+            <button mat-flat-button color="primary" *ngIf="logged" (click)="postular(oferta)">Postularme</button>
+        </mat-card-actions>
+    </div>
+</mat-card>
